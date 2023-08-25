@@ -8,38 +8,26 @@ const Button = (props) => {
   return <button onClick={props.onClick}>{props.text}</button>;
 };
 const App = () => {
-  const [counter, setCounter] = useState(0);
-  const [clicks, setClicks] = useState({
-    left: 0,
-    right: 0,
-  });
-  const handleLeftClick = () => {
-    setClicks({
-      ...clicks,
-      left: clicks.left + 1,
-    });
-  };
+  const [left, setLeft] = useState(0);
+  const [right, setRight] = useState(0);
+  const [allClicks, setAll] = useState([]);
 
-  const handleRightClick = () => {
-    setClicks({
-      ...clicks,
-      right: clicks.right + 1,
-    });
+  const handleLeftClick = () => {
+    setLeft(left + 1);
+    setAll(allClicks.concat("L"));
   };
-  const increaseByOne = () => setCounter(counter + 1);
-  const decreaseByOne = () => setCounter(counter - 1);
-  const setToZero = () => setCounter(0);
+  const handleRightClick = () => {
+    setRight(right + 1);
+    setAll(allClicks.concat("R"));
+  };
 
   return (
     <div>
-      <Display counter={counter} />
-      <Button onClick={increaseByOne} text="plus" />
-      <Button onClick={decreaseByOne} text="minus" />
-      <Button onClick={setToZero} text="zero" />
-      <Display counter={clicks.left} />
-      <Display counter={clicks.right} />
+      {left}
       <Button onClick={handleLeftClick} text="left" />
       <Button onClick={handleRightClick} text="right" />
+      {right}
+      <p>{allClicks.join(" ")}</p>
     </div>
   );
 };
