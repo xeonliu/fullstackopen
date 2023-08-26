@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Note from "./components/Note";
 
 // const Note = (props) => {
@@ -7,7 +8,13 @@ import Note from "./components/Note";
 // };
 
 const App = (props) => {
-  const { notes } = props;
+  const [notes, setNotes] = useState(props.notes);
+
+  const addNote = (event) => {
+    event.preventDefault();
+    console.log("button clicked", event.target);
+    //即form
+  };
 
   //必须为Note组件定义key属性而不是li
   return (
@@ -18,6 +25,10 @@ const App = (props) => {
           <Note key={note.id} note={note}></Note>
         ))}
       </ul>
+      <form onSubmit={addNote}>
+        <input />
+        <button type="submit">save</button>
+      </form>
     </div>
   );
 };
