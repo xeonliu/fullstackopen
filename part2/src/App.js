@@ -1,6 +1,10 @@
-const Note = ({ note }) => {
-  return <li>{note.content}</li>;
-};
+import Note from "./components/Note";
+
+// const Note = (props) => {
+//   // console.log(props.key);  //unable to visit
+//   const { note } = props;
+//   return <li>{note.content}</li>;
+// };
 
 const App = (props) => {
   const { notes } = props;
