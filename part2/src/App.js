@@ -10,13 +10,14 @@ import Note from "./components/Note";
 const App = (props) => {
   const [notes, setNotes] = useState(props.notes);
   const [newNote, setNewNote] = useState("a new note...");
+  const [showAll, setShowAll] = useState(true);
 
   const addNote = (event) => {
     event.preventDefault();
     console.log("button clicked", event.target); //即form
     const noteObject = {
       content: newNote,
-      date: new Date().toISOString,
+      date: new Date().toISOString(),
       important: Math.random() < 0.5,
       id: notes.length + 1,
     };
@@ -30,12 +31,19 @@ const App = (props) => {
     setNewNote(event.target.value);
   };
 
+  const notesToShow = showAll ? notes : notes.filter((note) => note.important);
+
   //必须为Note组件定义key属性而不是li
   return (
     <div>
       <h1>Notes</h1>
+      <div>
+        <button onClick={() => setShowAll(!showAll)}>
+          show {showAll ? "important" : "all"}
+        </button>
+      </div>
       <ul>
-        {notes.map((note) => (
+        {notesToShow.map((note) => (
           <Note key={note.id} note={note}></Note>
         ))}
       </ul>
