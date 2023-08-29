@@ -13,6 +13,17 @@ const App = () => {
   const [newNote, setNewNote] = useState("a new note...");
   const [showAll, setShowAll] = useState(true);
 
+  const toggleImportanceOf = (id) => {
+    const url = `http://localhost:3001/notes/${id}`;
+    const note = notes.find((n) => n.id === id);
+    const changedNote = { ...note, important: !note.important };
+
+    axios.put(url, changedNote).then((response) => {
+      setNotes(notes.map((note) => (note.id !== id ? note : response.data)));
+    });
+    console.log("importance of " + id + " needs to be toggled");
+    console.log(`importance of ${id} needs to be toggled`);
+  };
   useEffect(() => {
     console.log("effect");
     axios.get("http://localhost:3001/notes").then((response) => {
@@ -32,8 +43,11 @@ const App = () => {
       id: notes.length + 1,
     };
 
-    setNotes(notes.concat(noteObject));
-    setNewNote("");
+    axios.post("http://localhost:3001/notes", noteObject).then((response) => {
+      setNotes(notes.concat(noteObject));
+      setNewNote("");
+      console.log(response);
+    });
   };
 
   const handleNoteChange = (event) => {
@@ -54,7 +68,11 @@ const App = () => {
       </div>
       <ul>
         {notesToShow.map((note) => (
-          <Note key={note.id} note={note}></Note>
+          <Note
+            key={note.id}
+            note={note}
+            toggleImportance={() => toggleImportanceOf(note.id)}
+          ></Note>
         ))}
       </ul>
       <form onSubmit={addNote}>
