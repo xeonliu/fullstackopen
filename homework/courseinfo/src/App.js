@@ -3,12 +3,12 @@ const Header = (props) => {
   return <h1>{props.course}</h1>;
 };
 
-const Content = (props) => {
+const Content = ({ parts }) => {
   return (
     <>
-      <Part part={props.parts[0]} />
-      <Part part={props.parts[1]} />
-      <Part part={props.parts[2]} />
+      {parts.map((part) => (
+        <Part key={part.id} part={part} />
+      ))}
     </>
   );
 };
@@ -23,38 +23,19 @@ const Part = (props) => {
   );
 };
 
-const Total = (props) => {
+const Total = ({ parts }) => {
+  const initialValue = 0;
   return (
     <p>
       Number of exercises{" "}
-      {props.parts[0].exercises +
-        props.parts[1].exercises +
-        props.parts[2].exercises}
+      {parts.reduce((accumulator, currentValue) => {
+        return currentValue.exercises + accumulator;
+      }, 0)}
     </p>
   );
 };
 
-const App = () => {
-  //Step 5: 把课程和它的部分改成一个单一的JavaScript对象。修复所有破坏的地方。
-  const course = {
-    name: "Half Stack application development",
-    parts: [
-      {
-        name: "Fundamentals of React",
-        exercises: 10,
-      },
-      {
-        name: "Using props to pass data",
-        exercises: 7,
-      },
-      {
-        name: "State of a component",
-        exercises: 14,
-      },
-    ],
-  };
-
-  //然而，不要把不同的对象作为单独的prop从App组件传递给Content和Total组件。相反，直接将它们作为一个数组传递。
+const Course = ({ course }) => {
   return (
     <div>
       <Header course={course.name} />
@@ -62,6 +43,32 @@ const App = () => {
       <Total parts={course.parts} />
     </div>
   );
+};
+
+const App = () => {
+  const course = {
+    id: 1,
+    name: "Half Stack application development",
+    parts: [
+      {
+        name: "Fundamentals of React",
+        exercises: 10,
+        id: 1,
+      },
+      {
+        name: "Using props to pass data",
+        exercises: 7,
+        id: 2,
+      },
+      {
+        name: "State of a component",
+        exercises: 14,
+        id: 3,
+      },
+    ],
+  };
+
+  return <Course course={course} />;
 };
 
 export default App;
